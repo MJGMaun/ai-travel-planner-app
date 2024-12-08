@@ -1,9 +1,11 @@
 import { Text, View } from 'react-native';
+import Login from './../components/Login.jsx'
 
 export default function HomeScreen() {
   return (
     <View style={{ flex: 1, }}>
-		<Text style={{ fontSize: 30, fontFamily: 'outfit-bold' }}>Testing index</Text>
+		{/* <Text style={{ fontSize: 30, fontFamily: 'outfit-bold' }}>Testing index</Text> */}
+		<Login></Login>
 	</View>
   );
 }
