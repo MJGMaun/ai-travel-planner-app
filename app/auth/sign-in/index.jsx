@@ -1,9 +1,11 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ToastAndroid } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./../../../constants/Colors.ts";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./../../../configs/firebaseConfig.jsx";
 
 // TODO: fix UI for this screen
 
@@ -11,11 +13,43 @@ export default function SignIn() {
     const navigation = useNavigation();
 	const router = useRouter(); // needed when navigation to other screens
 
+	const [ email, setEmail ] = useState();
+	const [ password, setPassword ] = useState();
+
     useEffect(() => {
         navigation.setOptions({
             headerShown: false,
         });
     }, []); // this 2nd param is needed to be added [] to prevent calling it twice
+
+	const onSignIn = () => {
+
+		if ( ! email || ! password ) {
+			ToastAndroid.show("Please enter email and password!", ToastAndroid.BOTTOM);
+		}
+
+		signInWithEmailAndPassword(auth, email, password)
+		.then((userCredential) => {
+			// Signed in
+			const user = userCredential.user;
+			console.log(user);
+
+			// TODO: In order to persist auth state, use AsyncStorage
+			// redirect to homescreen
+		})
+		.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			// console.log(errorCode, errorMessage);
+			// TODO: error alerts?
+			if ( errorCode === "auth/invalid-email") {
+				ToastAndroid.show("Please enter valid email!", ToastAndroid.BOTTOM);
+			}
+			if ( errorCode === "auth/invalid-credential") {
+				ToastAndroid.show("Invalid user credentials!", ToastAndroid.BOTTOM);
+			}
+		});
+	}
 
     return (
         <View
@@ -76,6 +110,7 @@ export default function SignIn() {
 				type="email"
 				placeholder="Enter Email"
 				style={styles.input}
+				onChangeText={(value) => setEmail(value)}
 			/>
 		</View>
 
@@ -97,13 +132,14 @@ export default function SignIn() {
 				secureTextEntry={ true }
 				placeholder="Enter Password"
 				style={styles.input}
+				onChangeText={(value) => setPassword(value)}
 			/>
 		</View>
 
 		{/* Sign In button */}
 		<TouchableOpacity
 			style={styles.signin_button}
-			onPress={()=>router.push('auth/sign-in')}
+			onPress={onSignIn}
 		>
 			<Text
 				style={{
