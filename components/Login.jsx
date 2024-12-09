@@ -15,6 +15,7 @@ export default function Login() {
                 translucent={true}
                 backgroundColor="transparent"
             />
+
             <Image
                 source={require("./../assets/images/login.jpg")}
                 style={{ width: "100%", height: 550 }}
