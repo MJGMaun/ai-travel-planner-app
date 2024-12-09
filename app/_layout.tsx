@@ -9,9 +9,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    outfit: require('../assets/fonts/Outfit-Regular.ttf'),
-    outfit_medium: require('../assets/fonts/Outfit-Medium.ttf'),
-    outfit_bold: require('../assets/fonts/Outfit-Bold.ttf'),
+    'outfit': require('../assets/fonts/Outfit-Regular.ttf'),
+    'outfit-medium': require('../assets/fonts/Outfit-Medium.ttf'),
+    'outfit-bold': require('../assets/fonts/Outfit-Bold.ttf'),
   });
 
   useEffect(() => {
@@ -25,11 +25,8 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-		// screenOptions={{ headerShown: false}} // for all screens/page
-	>
-      <Stack.Screen name="index" options={{ title: "Home", headerShown: false }} />
-	  {/* options={{ headerShown: false }}, if you only want for this page/screen */}
-    </Stack>
+      <Stack>
+        <Stack.Screen name="index" options={{ title: "Home", headerShown: false }} />
+      </Stack>
   );
 }
